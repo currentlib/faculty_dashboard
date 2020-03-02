@@ -39,4 +39,4 @@ Dasboard uses a number of open source projects to work properly:
 And of course Dashboard itself is open source with a [public repository](https://github.com/currentlib/faculty_dashboard)
  on GitHub.
 
-[Demo](13.82.197.60) page if app is running.
+[Demo](http://13.82.197.60) page if app is running.
