@@ -13,7 +13,7 @@ $ npm i
 $ node index.js
 ```
 
-# Released features:
+### Released features:
 
   - Parse MQTT request
   - Web GUI
@@ -21,7 +21,7 @@ $ node index.js
   - Return table on request
   - Merge files in inputed date range
 
-# Future features:
+### Future features:
   - In/Out person and Put/Get key identifier
   - Response on RFID unit
   - and other...
