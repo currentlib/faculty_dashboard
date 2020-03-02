@@ -31,7 +31,7 @@ Dasboard uses a number of open source projects to work properly:
 
 * [Mosquitto](https://mosquitto.org/) - an open source (EPL/EDL licensed) message broker that implements the MQTT protocol
 * [exceljs](https://www.npmjs.com/package/exceljs) - read, manipulate and write spreadsheet data and styles to XLSX and JSON
-* [node.js] - evented I/O for the backend
+* [node.js](http://nodejs.org/) - evented I/O for the backend
 * [Express](https://expressjs.com/) - fast node.js network app framework
 * [adm-zip](https://www.npmjs.com/package/adm-zip) - pure JavaScript implementation for zip data compression for NodeJS
 * [body-parser](https://www.npmjs.com/package/body-parser) - Node.js body parsing middleware
