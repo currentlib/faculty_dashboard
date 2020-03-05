@@ -8,11 +8,14 @@ let config		= require('./config.json');
 let https		= require('https');
 let http		= require('http');
 
+<<<<<<< HEAD
 
 
 
 
 
+=======
+>>>>>>> e4323be415317afe71a3dc7b019ca57c426ee9d6
 let client		= mqtt.connect(config.mqtt_ip);
 let app			= express();
 
