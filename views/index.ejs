@@ -11,17 +11,21 @@
       <h1 align="left">University Dashboard</h1>
       <form method='post' action=''>
         <table>
-          <tr>
+          <tr style="margin-bottom: 20px;">
             <th>
-              <span for="firstDate">Start date</span>
+              <span for="firstDate">Початкова дата</span>
             </th>
             <th>
               <input name="reqDateFirst" type="date" value="firstDate">
             </th>
           </tr>
           <tr>
+            <th></th>
+            <th></th>
+          </tr>
+          <tr>
             <th>
-              <span for="secondDate">End date</span>
+              <span for="secondDate">Кінцева дата</span>
             </th>
             <th>
               <input name="reqDateSecond" type="date" value="secondDate">
@@ -31,17 +35,17 @@
         <br>
         <div align="left" style="margin-left: 40%;">
           <input type="radio" id="radio-box1" name="radio" value="archive_excels">
-          <label for="radio-box1">Download EXCEL files per day</label>
+          <label for="radio-box1">Завантажити таблиці роздільно</label>
           <br>
           <input type="radio" id="radio-box2" name="radio" value="one_excel">
-          <label for="radio-box2">Download one EXCEL file</label>
+          <label for="radio-box2">Завантажити об'єднану таблицю</label>
           <br>
           <input type="radio" id="radio-box3" name="radio" value="show" checked>
-          <label for="radio-box3">Show list here</label>
+          <label for="radio-box3">Показати тут</label>
         </div>
         <br>
         <div align="center">
-          <button type='submit' class="btn btn-lg btn-success">Click</button>
+          <button type='submit' class="btn btn-lg btn-success">Тиць</button>
         </div>
       </form>
     </div>

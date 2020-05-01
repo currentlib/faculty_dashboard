@@ -4,6 +4,7 @@ let zip			= require('adm-zip');
 let users       = require('./users.json')
 
 
+
 //Open excel file with name input parameter
 //object = {name, action (short/long), room}
 async function openExcelFile(object) {
@@ -113,30 +114,6 @@ function getCountOfRoom(worksheet, room) {
 }
 
 
-
-function addDataToExistingTable(path, object) {
-    let workbook = new Excel.Workbook();
-    console.log(`File ${path} exist.`);
-	workbook.xlsx.readFile(path)
-        .catch(function (err) {
-            console.log(err);
-        })
-        .then(function () {
-            let worksheet = workbook.getWorksheet("Data");
-            console.log(worksheet)
-            let lastRow = worksheet.lastRow;
-            let id = lastRow.getCell(1).value;
-            id++;
-            worksheet.addRow([id, object.name, object.action, object.room, new Date(), status]);
-            console.log(`Raw with ${id} ID was added`);
-            console.log("Writing file...");
-            workbook.xlsx.writeFile(path)
-            //saveExcelFile(path, workbook);
-            console.log("File writen.");
-        });
-}
-
-
 function isFileExist(path) {
     return fs.existsSync(path);
 }
@@ -149,11 +126,10 @@ async function mergeTables(files) {
 	let bigWorkbook = new Excel.Workbook();
 	let bigWorksheet = bigWorkbook.addWorksheet("Data");
 	bigWorksheet.columns = [
-		{ header: 'Name', 			key: 'name',		width: 25 },
-		{ header: 'Action', 		key: 'action', 		width: 30 },
-		{ header: 'Room',			key: 'room',		width: 10 },
-		{ header: 'Time',    		key: 'time', 	    width: 10 },
-		{ header: 'status', 		key: 'status',  	width: 10 }
+		{ header: "Ім'я", 			key: 'name',		width: 25 },
+		{ header: 'Дія', 		    key: 'action', 		width: 30 },
+		{ header: 'Кімната',		key: 'room',		width: 10 },
+		{ header: 'Час',    		key: 'time', 	    width: 10 }
 	];
 	for (let i=0; i<files.length; i++) {
 		let workbook = new Excel.Workbook();
@@ -161,9 +137,9 @@ async function mergeTables(files) {
 			let worksheet = workbook.getWorksheet("Data");
 			worksheet.eachRow(function(row, index){
 				if (row.values[1] != 'No') {
-					bigWorksheet.addRow([row.values[2], row.values[3], row.values[4], row.values[5], getStringTime(row.values[6])]);
+					bigWorksheet.addRow([row.values[2], row.values[3], row.values[4], getStringTime(row.values[5])]);
 				}
-				var roww = bigWorksheet.lastRow;
+				//var roww = bigWorksheet.lastRow;
 			})
 		})
 		console.log(`File ${files[i]} was merged.`)
@@ -181,6 +157,13 @@ async function saveExcelFile(path, workbook) {
 }
 
 
+//Return hours end minutes as string
+
+function getStringTime(date) {
+	let time = new Date(date);
+	return time.getFullYear() + "-" + time.getMonth() +"-" + time.getDate() + " " + time.getHours() + ":" + time.getMinutes() + "." + time.getSeconds();
+}
+
 //Get files on date range
 function getFiles(date1, date2) {
 	let files = [];
@@ -196,7 +179,6 @@ function getFiles(date1, date2) {
 	return files;
 }
 
-
 //Create zip file from request
 function zipFiles(files) {
 	let archive = new zip();
@@ -204,8 +186,7 @@ function zipFiles(files) {
 		console.log(`Adding ${files[i]} file to archive...`)
 		archive.addLocalFile(files[i]);
 	}
-	let currentTime = new Date();
-	let zipName = `./public/archives/${currentTime.getTime()}.zip`;
+	let zipName = `./public/archive.zip`;
 	archive.writeZip(zipName);
 	console.log(`Archive create and saved to ${zipName}`)
 	return zipName
@@ -216,3 +197,7 @@ function zipFiles(files) {
 //EXPORTS
 
 module.exports.openExcelFile = openExcelFile;
+module.exports.mergeTables = mergeTables;
+module.exports.getFiles = getFiles;
+module.exports.zipFiles = zipFiles;
+module.exports.saveExcelFile = saveExcelFile;
