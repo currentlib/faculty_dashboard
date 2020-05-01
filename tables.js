@@ -1,6 +1,7 @@
 let Excel		= require('exceljs');
 let fs			= require('fs');
 let zip			= require('adm-zip');
+let users       = require('./users.json')
 
 
 //Open excel file with name input parameter
@@ -10,97 +11,89 @@ async function openExcelFile(object) {
 	let fileName = `${currentDate.getDate()}_${currentDate.getMonth()}_${currentDate.getFullYear()}.xlsx`;
 	let pathToTable = "./public/Data/" + fileName;
     if (!isFileExist(pathToTable)) {
-        await createTodayTable(pathToTable, ()=> {
-            addActionToTable(pathToTable, object);
-        });
+        createTodayTable(pathToTable).then(setTimeout(addActionToTable, 3000, pathToTable, object));
     } else {
-        await addActionToTable(pathToTable, object);
+        addActionToTable(pathToTable, object);
     }
 }
 
 
-function createTodayTable(path, callback) {
+function createTodayTable(path) {
     console.log(`File ${path} does not exist. Creating started...`);
     let workbook = new Excel.Workbook();
-	let worksheet = workbook.addWorksheet("Data");
-	worksheet.columns = [
-		{ header: 'No',				key: 'id',			width: 5  },
-		{ header: 'Name', 			key: 'name',		width: 25 },
-		{ header: 'Action', 		key: 'action', 		width: 30 },
-		{ header: 'Room',			key: 'room',		width: 10 },
-		{ header: 'Time',    		key: 'time',     	width: 10 },
-		{ header: 'Status', 		key: 'status',  	width: 10 }
-	];
-    //worksheet.addRow([1, object.name, object.action, object.room, new Date(), "in"]);
-    worksheet.addRow(["1", "1", "1", "1", "1", "1"]);
-	saveExcelFile(path, workbook);
-    console.log(`File ${path} created.`);
-    callback();
+	let worksheet// = workbook.addWorksheet("Data");
+	return new Promise( function(resolve, reject) {
+        try {
+            worksheet = workbook.addWorksheet("Data");
+            worksheet.columns = [
+                { header: 'No',				key: 'id',			width: 5  },
+                { header: "Ім'я", 			key: 'name',		width: 25 },
+                { header: 'Дія', 		    key: 'action', 		width: 30 },
+                { header: 'Аудиторія',		key: 'room',		width: 10 },
+                { header: 'Час',    		key: 'time',     	width: 10 },
+                { header: 'Статус', 		key: 'status',  	width: 10 }
+            ];
+            workbook.xlsx.writeFile(path);
+            console.log(`File ${path} created.`);
+            resolve(workbook)
+        }
+        catch(err) {
+            reject()
+        }
+    }); 
 }
 
 function addActionToTable(path, object) {
     let workbook = new Excel.Workbook();
     console.log(`File ${path} reading...`);
 	workbook.xlsx.readFile(path)
-        // .catch(function (err) {
-        //     console.log("Huuuuuuuuuu");
-        //     console.log(err);
-        // })
         .then(function () {
             let worksheet = workbook.getWorksheet("Data");
             let usersAction = "";
-            let lastRow;
-            let id;
-            let status;
-            let roomCount;
-            if (typeof worksheet == undefined) {
-                console.log("UNDEFINED")
-                id = 0;
-                status = "in";
-                roomCount = 1;
-            } else {
-                lastRow = worksheet.lastRow;
-                id = lastRow.getCell(1).value;
-                status = getLastStatus(worksheet, object.name);
-                roomCount = getCountOfRoom(worksheet, object.room);
-            }
+            let lastRow = worksheet.lastRow;
+            let id = lastRow.getCell(1).value;
+            let username = users[object.name];
+            let status = getLastStatus(worksheet, username);
+            let roomCount = getCountOfRoom(worksheet, object.room);
             if (id == 'No') {
                 id = 1;
             } else {
                 id++;
             }
             if (object.action == "long") {
-                if (status == "out") {
-                    usersAction = "Enter and ";
+                if (status == "out" || "") {
+                    usersAction = "Ввійшов і ";
                 }
 
                 if (roomCount%2 != 0) {
-                    usersAction += "Put key";
+                    usersAction += "Залишив ключ";
                 } else {
-                    usersAction += "Get key";
+                    usersAction += "Взяв ключ";
                 }
                 status = "in";
             } else {
                 if (status == "in") {
-                    usersAction = "Exit";
+                    usersAction = "Вийшов";
                     status = "out"
                 } else {
-                    usersAction = "Enter";
+                    usersAction = "Ввійшов";
                     status = "in"
                 }
             }
             
-            worksheet.addRow([id, object.name, usersAction, object.room, new Date(), status]);
+            worksheet.addRow([id, username, usersAction, object.room, new Date(), status]);
             console.log(`Row with ${id} ID was added`);
             console.log("Writing file...");
             saveExcelFile(path, workbook);
             console.log("File writen.");
+        }, function () {
+            console.log("Something went wrong.")
         });
 }
 
 
 function getLastStatus(worksheet, name) {
-    let status = "";
+    let status = "out";
     worksheet.eachRow(function(row){
         if (row.getCell(2) == name) {
             status = row.values[6];
@@ -112,7 +105,6 @@ function getLastStatus(worksheet, name) {
 function getCountOfRoom(worksheet, room) {
     let count = 0;
     worksheet.eachRow(function(row){
-        //console.log("Cell " + row.getCell(2));
         if (row.getCell(4) == room) {
              count++;
         }
@@ -138,7 +130,8 @@ function addDataToExistingTable(path, object) {
             worksheet.addRow([id, object.name, object.action, object.room, new Date(), status]);
             console.log(`Raw with ${id} ID was added`);
             console.log("Writing file...");
-            saveExcelFile(path, workbook);
+            workbook.xlsx.writeFile(path)
+            //saveExcelFile(path, workbook);
             console.log("File writen.");
         });
 }
@@ -147,50 +140,6 @@ function addDataToExistingTable(path, object) {
 function isFileExist(path) {
     return fs.existsSync(path);
 }
-
-
-//Check file existing
-//if file does not exists create it and init worksheet
-// async function checkFileExists(name, object) {
-// 	let workbook = new Excel.Workbook();
-// 	if (fs.existsSync(name)) {
-// 		console.log(`File ${name} exist.`);
-// 		workbook.xlsx.readFile(name)
-// 			.catch(function (err) {
-// 				console.log(err);
-// 			})
-// 			.then(function () {
-// 				let worksheet = workbook.getWorksheet("Data");
-// 				let lastRow = worksheet.lastRow;
-// 				let id = lastRow.getCell(1).value;
-// 				id++;
-// 				console.log(`Raw with ${id} ID was added`);
-// 				worksheet.addRow([id, object.name, object.action, object.room, object.time, new Date()]);
-// 				console.log("Writing file...");
-// 				saveExcelFile(name, workbook);
-// 				console.log("File writen.");
-// 			});
-// 	} else {
-// 		console.log(`File ${name} does not exist. Creating started...`);
-
-// 		var worksheet = workbook.addWorksheet("Data");
-// 		worksheet.columns = [
-// 			{ header: 'No',				key: 'id',			width: 5  },
-// 			{ header: 'Name', 			key: 'name',		width: 25 },
-// 			{ header: 'Action', 		key: 'action', 		width: 30 },
-// 			{ header: 'Room',			key: 'room',		width: 10 },
-// 			{ header: 'Time',    		key: 'time',     	width: 10 },
-// 			{ header: 'Status', 		key: 'status',  	width: 5 }
-// 		];
-// 		worksheet.addRow([1, object.name, object.action, object.room, new Date(), "in"]);
-// 		saveExcelFile(name, workbook);
-// 		console.log(`File ${name} created.`);
-// 	}
-
-// 	var state = true;
-// 	return state;
-// }
-
 
 
 //Read all rows from input files and create one big table for table.ejs output
@@ -262,10 +211,8 @@ function zipFiles(files) {
 	return zipName
 }
 
+
+
 //EXPORTS
 
 module.exports.openExcelFile = openExcelFile;
-//module.exports.zipFiles = zipFiles;
-//module.exports.saveExcelFile = saveExcelFile;
-//module.exports.getFiles = getFiles;
-//module.exports.mergeTables = mergeTables;
