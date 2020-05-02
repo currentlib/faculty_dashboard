@@ -24,9 +24,11 @@ $ node index.js
 
 ### How to use
 Create config file and run
+
 ```sh
 $ node index.js
 ```
+
 Income mqtt message must be JSON-like: {"name": "${number}", "action": "long/short", "room": number}<br />
 Where name number is number from users.json table; long action with room number (get/put key), short action can be without room number (enter/exit);<br /> room number - number of room which key used.<br />
 
@@ -39,14 +41,13 @@ Dasboard uses a number of open source projects to work properly:
 * [body-parser](https://www.npmjs.com/package/body-parser) - Node.js body parsing middleware
 * [adm-zip](https://www.npmjs.com/package/adm-zip) - pure JavaScript implementation for zip data compression for NodeJS
 <br />
-<br />
 Free mqtt broker:
 
 * [Mosquitto](https://mosquitto.org/) - an open source (EPL/EDL licensed) message broker that implements the MQTT protocol
 * [Cloudmqtt](https://www.cloudmqtt.com/) - register free mqtt broker with 5 connections limit.
 <br />
-And of course Dashboard itself is open source with a [public repository](https://github.com/currentlib/faculty_dashboard)
- on GitHub.
+
+And of course Dashboard itself is open source with a [public repository](https://github.com/currentlib/faculty_dashboard) on GitHub.
 <br />
 
 ### Workflow
