@@ -22,6 +22,14 @@ $ node index.js
   - Merge files in inputed date range
   - In/Out person and Put/Get key identifier
 
+### How to use
+Create config file and run
+```sh
+$ node index.js
+```
+Income mqtt message must be JSON-like: {"name": "${number}", "action": "long/short", "room": number}
+Where name number is number from users.json table; long action with room number (get/put key), short action can be without room number (enter/exit); room number - number of room which key used.
+
 ### Tech
 Dasboard uses a number of open source projects to work properly:
 
