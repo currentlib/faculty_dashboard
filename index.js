@@ -1,19 +1,12 @@
-let mqtt		= require('mqtt');
 let express		= require('express');
 let bodyParser	= require('body-parser');
 let config		= require('./config.json');
 let tables 		= require('./tables.js');
 let Excel		= require('exceljs');
+let mqtt		= require('./mqtt.js')
 
 
-
-let client = mqtt.connect("https://tailor.cloudmqtt.com", {
-    port: 11847,
-    username: "euveaslz",
-    password: "EeAR0N6BgvpM"}
-);
-
-let app			= express();
+let app	= express();
 
 app.use(bodyParser.urlencoded({ exneded: true }));
 app.use(express.static('public'));
@@ -69,16 +62,8 @@ app.post('/', async function (req, res) {
 	}
 })
 
-client.on('connect', function () {
-	client.subscribe("test");
-	console.log('Connected to ' + "test" + " topic.");
+app.listen(config.web_port, function() {
+	console.log("Listening on " + config.web_port + " port.");
 });
 
-client.on('message', function (topic, message) {
-	var inputObject = JSON.parse(message); // [name, action (short/long), room]
-	tables.openExcelFile(inputObject);
-});
-
-app.listen(config.app_port, function() {
-	console.log("Listening on " + config.app_port + " port.");
-});
+mqtt.startMqtt();
