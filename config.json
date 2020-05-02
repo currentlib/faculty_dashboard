@@ -1,8 +1,0 @@
-{
-    "mqtt_address": "https://tailor.cloudmqtt.com",
-    "mqtt_topic": "test",
-    "mqtt_port": 11847,
-    "mqtt_user": "euveaslz",
-    "mqtt_pass": "EeAR0N6BgvpM",
-    "web_port": 80
-}
