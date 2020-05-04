@@ -1,8 +1,8 @@
 let express		= require('express');
+let Excel		= require('exceljs');
 let bodyParser	= require('body-parser');
 let config		= require('./config.json');
 let tables 		= require('./tables.js');
-let Excel		= require('exceljs');
 let mqtt		= require('./mqtt.js')
 
 
