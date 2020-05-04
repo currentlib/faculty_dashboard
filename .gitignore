@@ -2,3 +2,6 @@ node_modules/
 package-lock.json
 package-lock_comm.json
 config.json
+public/Data/
+public/archive.zip
+public/merged.xlsx
