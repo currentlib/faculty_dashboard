@@ -5,7 +5,7 @@ Electronic system of control, accounting of working hours and journal of issuing
 
 System requires [Node.js](https://nodejs.org/) v6+ to run.
 
-Install the dependencies and devDependencies and start the server.
+Clone repo and install the dependencies and devDependencies.
 
 ```sh
 $ git clone https://github.com/currentlib/faculty_dashboard.git
@@ -23,15 +23,19 @@ $ npm i
   - In/Out person and Put/Get key identifier
 
 ### How to use
-Create config file and run <br />
+Edit config-demo.json, fill all fields with your credentials and save as 'config.json'. <br />
+Edit user-demo.json, create table with user names and save as 'users.json' <br />
+Then run application <br />
 
 ```sh
 $ node index.js
 ```
-
-Income mqtt message must be JSON-like: {"name": "${number}", "action": "long/short", "room": number}<br />
-Where name number is number from users.json table; long action with room number (get/put key), short action can be without room number (enter/exit);<br /> room number - number of room which key used.<br />
-
+<br />
+Income mqtt message must be JSON-like: {"name": "${number}", "action": "${action}", "room": number}<br />
+Where name number is number from users.json table; <br />
+string "long" in action field with room number (get/put key) or string "short" in action field can be with any (0) room number (enter/exit);<br /> 
+room number - number of room which key used.<br />
+<br />
 ### Tech
 Dasboard uses a number of open source projects to work properly:
 
