@@ -1,6 +1,6 @@
 pipeline {
     agent any
-     stages {
+    stages {
        stage('Build docker image') {
           steps {
              echo 'Building docker image...'
@@ -29,9 +29,9 @@ pipeline {
           steps {
              echo 'Running container...'
              script {
-                 sh 'docker run -d -p 80:80 nodejs:dev'
+                 sh 'docker run --restart always -d -p 80:80 nodejs:dev'
              }
           }
        }
     }
- }
+}
