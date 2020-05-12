@@ -1,6 +1,7 @@
-let mqtt    = require("mqtt")
-let config	= require("./config.json")
-let tables	= require("./tables.js")
+let mqtt    = require("mqtt");
+let config	= require("./config.json");
+let tables	= require("./tables.js");
+let users	= require("./users.json");
 
 
 module.exports.startMqtt = function () {
@@ -18,7 +19,12 @@ module.exports.startMqtt = function () {
 	
 	client.on('message', function (topic, message) {
 		var inputObject = JSON.parse(message); // [name, action (short/long), room]
-		tables.openExcelFile(inputObject);
+		if (Object.keys(users).includes(inputObject.name)) {
+			tables.openExcelFile(inputObject);
+		} else {
+			console.log("User ID: " + inputObject.name + " not allowed.")
+		}
+		
 	});
 }
 
