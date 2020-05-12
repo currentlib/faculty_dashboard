@@ -22,7 +22,7 @@ function isLower(date1, date2) {
 }
 
 app.get('/', function (req, res) {
-	res.render('index.ejs', { title: "Dashboard"});
+	res.render('index.ejs', { title: "Dashboardddd"});
 });
 
 app.post('/', async function (req, res) {
