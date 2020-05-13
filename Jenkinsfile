@@ -5,18 +5,8 @@ pipeline {
           steps {
              echo 'Building docker image...'
              script {
-		 sh 'docker ps -f name=nodejs:dev -q | xargs --no-run-if-empty docker container stop'
-		 sh 'docker container ls -a -fname=nodejs:dev -q | xargs -r docker container rm'
-		 //if (sh 'docker ps -q --filter ancestor=nodejs:dev') {
-		 //	 sh 'docker stop $(docker ps -q --filter ancestor=nodejs:dev)'
-		 //} else {
-		 //	 echo "Else statement"
-		 //}
-                 //try {
-                 //    sh 'docker stop $(docker ps -q --filter ancestor=nodejs:dev)'
-                 //} catch (err) {
-                 //    echo err
-                 //}
+		 sh 'docker ps -f name=faculty-dashboard -q | xargs --no-run-if-empty docker container stop'
+		 sh 'docker container ls -a -fname=faculty-dashboard -q | xargs -r docker container rm'
                  sh 'rm -rf /home/faculty_dashboard'
                  sh 'mkdir /home/faculty_dashboard'
                  sh 'git clone https://github.com/currentlib/faculty_dashboard.git /home/faculty_dashboard'
@@ -32,7 +22,7 @@ pipeline {
           steps {
              echo 'Running container...'
              script {
-                 sh 'docker run --restart always -d -p 80:80 nodejs:dev'
+                 sh 'docker run --restart always -d -p 80:80 --name faculty-dashboard nodejs:dev'
              }
           }
        }
