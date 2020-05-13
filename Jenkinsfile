@@ -7,16 +7,16 @@ pipeline {
              script {
 		 sh 'docker ps -f name=nodejs:dev -q | xargs --no-run-if-empty docker container stop'
 		 sh 'docker container ls -a -fname=nodejs:dev -q | xargs -r docker container rm'
-		 #if (sh 'docker ps -q --filter ancestor=nodejs:dev') {
-		 #	 sh 'docker stop $(docker ps -q --filter ancestor=nodejs:dev)'
-		 #} else {
-		 #	 echo "Else statement"
-		 #}
-                 #try {
-                 #    sh 'docker stop $(docker ps -q --filter ancestor=nodejs:dev)'
-                 #} catch (err) {
-                 #    echo err
-                 #}
+		 //if (sh 'docker ps -q --filter ancestor=nodejs:dev') {
+		 //	 sh 'docker stop $(docker ps -q --filter ancestor=nodejs:dev)'
+		 //} else {
+		 //	 echo "Else statement"
+		 //}
+                 //try {
+                 //    sh 'docker stop $(docker ps -q --filter ancestor=nodejs:dev)'
+                 //} catch (err) {
+                 //    echo err
+                 //}
                  try {
                      sh 'rm -r /home/faculty_dashboard'
                  } catch (err) {
