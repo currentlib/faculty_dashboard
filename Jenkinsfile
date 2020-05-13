@@ -17,11 +17,7 @@ pipeline {
                  //} catch (err) {
                  //    echo err
                  //}
-                 try {
-                     sh 'rm -r /home/faculty_dashboard'
-                 } catch (err) {
-                     echo err
-                 }
+                 sh 'rm -rf /home/faculty_dashboard'
                  sh 'mkdir /home/faculty_dashboard'
                  sh 'git clone https://github.com/currentlib/faculty_dashboard.git /home/faculty_dashboard'
                  sh 'cp  /var/jenkins_home/dashboard/Dockerfile /home/faculty_dashboard'
