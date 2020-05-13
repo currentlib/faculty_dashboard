@@ -5,11 +5,16 @@ pipeline {
           steps {
              echo 'Building docker image...'
              script {
-                 try {
-                     sh 'docker stop $(docker ps -q --filter ancestor=nodejs:dev)'
-                 } catch (err) {
-                     echo err
-                 }
+		 if (sh 'docker ps -q --filter ancestor=nodejs:dev') {
+			 sh 'docker stop $(docker ps -q --filter ancestor=nodejs:dev)'
+		 } else {
+			 echo "Else statement"
+		 }
+                 #try {
+                 #    sh 'docker stop $(docker ps -q --filter ancestor=nodejs:dev)'
+                 #} catch (err) {
+                 #    echo err
+                 #}
                  try {
                      sh 'rm -r /home/faculty_dashboard'
                  } catch (err) {
