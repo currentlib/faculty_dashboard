@@ -22,7 +22,7 @@ pipeline {
           steps {
              echo 'Running container...'
              script {
-                 sh 'docker run --restart always -d -p 80:80 --name faculty-dashboard nodejs:dev'
+                 sh 'docker run --restart always -d -p 80:80 -v /root/Data:/usr/src/app/faculty_dashboard/public/Data --name faculty-dashboard nodejs:dev'
              }
           }
        }
