@@ -20,11 +20,12 @@ module.exports.startMqtt = function () {
 	client.on('message', function (topic, message) {
 		var inputObject = JSON.parse(message); // [name, action (short/long), room]
 		if (Object.keys(users).includes(inputObject.name)) {
+			client.publish("server", "allow");
 			tables.openExcelFile(inputObject);
 		} else {
+			client.publish("server", "deny");
 			console.log("User ID: " + inputObject.name + " not allowed.")
 		}
-		
 	});
 }
 

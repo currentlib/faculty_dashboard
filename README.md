@@ -1,6 +1,11 @@
 # University Dashboard
 Electronic system of control, accounting of working hours and journal of issuing keys from the audience for university employees
 
+### Hardware part
+
+This project requires hardware device. <br />
+[Here](https://github.com/currentlib/faculty_dashboard_hardware) is repository.
+
 ### Installation
 
 System requires [Node.js](https://nodejs.org/) v6+ to run.
