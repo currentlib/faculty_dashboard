@@ -14,18 +14,28 @@ module.exports.startMqtt = function () {
 	
 	client.on('connect', function () {
 		client.subscribe(config.mqtt_topic);
+		client.subscribe(config.mqtt_topic2);
 		console.log('Connected to ' + config.mqtt_topic + " topic.");
 	});
 	
 	client.on('message', function (topic, message) {
 		var inputObject = JSON.parse(message); // [name, action (short/long), room]
-		if (Object.keys(users).includes(inputObject.name)) {
-			client.publish("server", "allow");
+		console.log(topic);
+		if (topic == "EeAR0N6BgvpM/test") {
+			if (Object.keys(users).includes(inputObject.name)) {
+				console.log("allow");
+				client.publish("EeAR0N6BgvpM/server", "1");
+				// tables.openExcelFile(inputObject);
+			} else {
+				console.log("deny");
+				client.publish("EeAR0N6BgvpM/server", "0");
+				console.log("User ID: " + inputObject.name + " not allowed.")
+			}
+		} else if (topic == "EeAR0N6BgvpM/test2") {
+			console.log("writing");
 			tables.openExcelFile(inputObject);
-		} else {
-			client.publish("server", "deny");
-			console.log("User ID: " + inputObject.name + " not allowed.")
 		}
+		
 	});
 }
 

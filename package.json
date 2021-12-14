@@ -18,6 +18,6 @@
     "morgan": "~1.9.1",
     "mqtt": "^3.0.0",
     "node-sass-middleware": "0.11.0",
-    "nodemon": "^2.0.2"
+    "nodemon": "^2.0.15"
   }
 }
